@@ -933,6 +933,10 @@ importers:
         version: 4.4.5(vue@3.5.12(typescript@5.6.3))
 
   packages/entities/entities-redis-configurations:
+    dependencies:
+      uuid:
+        specifier: ^10.0.0
+        version: 10.0.0
     devDependencies:
       '@kong/design-tokens':
         specifier: 1.17.2
@@ -940,6 +944,9 @@ importers:
       '@kong/kongponents':
         specifier: 9.14.8
         version: 9.14.8(axios@1.7.7)(vue-router@4.4.5(vue@3.5.12(typescript@5.6.3)))(vue@3.5.12(typescript@5.6.3))
+      '@types/uuid':
+        specifier: ^10.0.0
+        version: 10.0.0
       vue:
         specifier: ^3.5.12
         version: 3.5.12(typescript@5.6.3)
@@ -1793,6 +1800,7 @@ packages:
 
   '@evilmartians/lefthook@1.8.2':
     resolution: {integrity: sha512-SZdQk3W9q7tcJwnSwEMUubQqVIK7SHxv52hEAnV7o3nPI+xKcmd+rN0hZIJg07wjBaJRAjzdvoQySKQQYPW5Qw==}
+    cpu: [x64, arm64, ia32]
     os: [darwin, linux, win32]
     hasBin: true
 
