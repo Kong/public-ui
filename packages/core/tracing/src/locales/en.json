@@ -3,6 +3,15 @@
     "content": "Content of the header",
     "title": "Title of the header"
   },
+  "payload": {
+    "attributes": {
+      "latency": "Latency",
+      "start_time": "Start time",
+      "status_code": "Status code",
+      "upstream_status_code": "Upstream status code"
+    },
+    "section_title": "Information"
+  },
   "span_attributes": {
     "labels": {
       "end_time": "End time",
