@@ -95,6 +95,7 @@
             :options="formOptions"
             :schema="advancedFieldsSchema"
             @model-updated="onModelUpdated"
+            @partial-toggled="onPartialToggled"
           />
         </div>
       </template>
@@ -104,6 +105,7 @@
 
 <script>
 import { AUTOFILL_SLOT, AUTOFILL_SLOT_NAME } from '../../const'
+import composables from '../../composables'
 import VueFormGenerator from '../FormGenerator.vue'
 
 const COMMON_FIELD_MODELS = new Set([
@@ -147,6 +149,10 @@ export default {
       default: () => { },
     },
     onModelUpdated: {
+      type: Function,
+      required: true,
+    },
+    onPartialToggled: {
       type: Function,
       required: true,
     },
@@ -236,13 +242,16 @@ export default {
             }, []),
         }
 
+        const { redis, redisModels } = composables.useRedisPartial(this.formSchema)
+
         this.advancedFieldsSchema = {
           fields: this.formSchema.fields
             .filter(field =>
               (field.model.startsWith('config')
                 && field.model !== 'config-auth_methods'
                 && !COMMON_FIELD_MODELS.has(field.model)
-                && !AUTH_FIELD_MODELS.has(field.model))
+                && !AUTH_FIELD_MODELS.has(field.model)
+                && !redisModels.includes(field.model))
               || field.model === 'tags',
             )
             .reduce((fields, field) => {
@@ -279,6 +288,9 @@ export default {
               return fields
             }, []),
         }
+
+        // Add Redis partial to the front of advanced fields
+        this.advancedFieldsSchema.fields.unshift(redis)
 
         // Use checkboxes for auth methods
         this.sessionManagement = this.isEditing ? this.formModel['config-auth_methods'].includes('session') : false
