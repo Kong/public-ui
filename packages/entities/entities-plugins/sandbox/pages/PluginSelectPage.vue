@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { KonnectPluginSelectConfig, KongManagerPluginSelectConfig } from '../../src'
+import type { KonnectPluginSelectConfig, KongManagerPluginSelectConfig, CustomPluginType } from '../../src'
 import { PluginSelect } from '../../src'
 
 const controlPlaneId = import.meta.env.VITE_KONNECT_CONTROL_PLANE_ID || ''
@@ -40,11 +40,12 @@ const konnectConfig = ref<KonnectPluginSelectConfig>({
   }),
   // custom plugins
   createCustomRoute: { name: 'create-custom-plugin' },
-  getCustomEditRoute: (plugin: string) => ({
+  getCustomEditRoute: (plugin: string, type: CustomPluginType) => ({
     name: 'edit-custom-plugin',
     params: {
       control_plane_id: controlPlaneId.value,
       plugin,
+      customPluginType: type,
     },
   }),
 })
