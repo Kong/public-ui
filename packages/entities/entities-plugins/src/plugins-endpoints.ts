@@ -15,6 +15,7 @@ export default {
   select: {
     konnect: {
       availablePlugins: `${konnectBaseApiUrl}/v1/available-plugins`,
+      streamingCustomPlugins: `${konnectBaseApiUrl}/custom-plugins`,
     },
     kongManager: {
       availablePlugins: `${KMBaseApiUrl}/kong`,

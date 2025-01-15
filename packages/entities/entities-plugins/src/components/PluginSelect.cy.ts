@@ -9,6 +9,7 @@ import {
   firstShownCustomPlugin,
   kongPluginNames,
   customPluginNames,
+  konnectCustomPlugins,
 } from '../../fixtures/mockData'
 import type { Router } from 'vue-router'
 import { createMemoryHistory, createRouter } from 'vue-router'
@@ -27,11 +28,12 @@ const baseConfigKonnect: KonnectPluginSelectConfig = {
   }),
   // custom plugins
   createCustomRoute: { name: 'create-custom-plugin' },
-  getCustomEditRoute: (plugin: string) => ({
+  getCustomEditRoute: (plugin: string, type: 'streaming' | 'non-streaming') => ({
     name: 'edit-custom-plugin',
     params: {
       control_plane_id: 'abc-123-i-love-cats',
       plugin,
+      customPluginType: type,
     },
   }),
 }
@@ -372,6 +374,17 @@ describe('<PluginSelect />', {
           body: params?.mockData ?? konnectAvailablePlugins,
         },
       ).as(params?.alias ?? 'getAvailablePlugins')
+
+      cy.intercept(
+        {
+          method: 'GET',
+          url: `${baseConfigKonnect.apiBaseUrl}/v2/control-planes/${baseConfigKonnect.controlPlaneId}/core-entities/custom-plugins`,
+        },
+        {
+          statusCode: 200,
+          body: konnectCustomPlugins,
+        },
+      ).as('getStreamingCustomPlugins')
     }
 
     beforeEach(() => {
@@ -390,6 +403,7 @@ describe('<PluginSelect />', {
       cy.mount(PluginSelect, {
         props: {
           config: baseConfigKonnect,
+          customPlugins: 'non-streaming',
         },
         router,
       })
@@ -661,6 +675,7 @@ describe('<PluginSelect />', {
         cy.mount(PluginSelect, {
           props: {
             config: baseConfigKonnect,
+            customPlugins: 'non-streaming',
             canCreateCustomPlugin: () => false,
             canEditCustomPlugin: () => true,
             canDeleteCustomPlugin: () => true,
@@ -688,6 +703,7 @@ describe('<PluginSelect />', {
         cy.mount(PluginSelect, {
           props: {
             config: baseConfigKonnect,
+            customPlugins: 'streaming',
             canCreateCustomPlugin: () => true,
             canEditCustomPlugin: () => false,
             canDeleteCustomPlugin: () => false,

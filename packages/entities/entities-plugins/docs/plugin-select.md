@@ -61,7 +61,7 @@ A grid component for selecting Plugins.
     - The route for creating a custom plugin.
 
   - `getCustomEditRoute`:
-    - type: `(plugin: string) => RouteLocationRaw`
+    - type: `(plugin: string, type: 'streaming' | 'non-streaming') => RouteLocationRaw`
     - required: `false`
     - default: `undefined`
     - A function that returns the route for editing a custom plugin.
@@ -92,13 +92,16 @@ A grid component for selecting Plugins.
 
 The base konnect or kongManger config.
 
-#### `disableCustomPlugins`
+#### `customPlugins`
 
-- type: `boolean`
+- type: `false | 'streaming' | 'non-streaming'`
 - required: `false`
 - default: `false`
 
-Show the custom plugins tab, but disable it.
+Control plane custom plugins support level.
+When set to false, custom plugins are not supported, the custom plugins tab is grayed out and disabled.
+For 'non-streaming' and 'streaming', all existing custom plugins will be shown in the custom plugins tab and can be modified or deleted.
+Users can create new non-streaming custom plugins ONLY if 'non-streaming' is set, and new streaming custom plugins ONLY if 'streaming' is set.
 
 #### `hideCustomPlugins`
 
